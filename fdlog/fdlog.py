@@ -2,13 +2,13 @@
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLog1-148v 20010/08/18\n"\
+prog = "FDLog1-148vf 2010/08/18\n"\
        "(c) 2002-2010 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
        "FDLOG is distributed under the GNU Public License\n"
 
 print prog
 
-print "VHF version dup checks on call/grid\n"
+#print "VHF version dup checks on call/grid\n"
 
 about = """
 
@@ -21,6 +21,25 @@ by Alan Biocca (WB6ZQZ)
 about 3800 lines of Python (www.python.org)
 
 """
+
+# line 1406/7 comment out appropriate line to change from fd to vhf version
+
+# major version data
+# 1 small c version 1984
+# 2 os9
+# 3 msdos
+# 4 python rewrite 2002
+# 5? major restructuring??
+
+# considering numbering
+# FDLog-<major>-<minor>-<release>-<build>.zip
+# where build is a snapshot, autoincrement (a freeze?)
+# and release is autoincrement
+# and major and minor are manually managed?
+# note this does not affect files, fdlog.py is still executable
+# current version might become FDLogVHF-4.9.29.149
+
+
 
 # Release Log below, suggestion list at end of file
 
@@ -406,10 +425,8 @@ executable in one file. added cvs log into source. improved root title
 
 Program History (Pre-CVS)
 
-Original version in about 1974 for HDOS/CPM...
-
 Re-coding started 3/6/2002 Alan K Biocca WB6ZQZ (wb6zqz@arrl.net)
-Design based on fdlog.c, by same author starting in 1984.
+Design based on fdlog.c, by same author starting in 1984 for CP/M.
 
 Goal: a minimum keystroke field day logging program supporting
       a group of users (a whole FD site) simultaneously
@@ -1386,8 +1403,8 @@ class qsodb:
     def dupck(self, wcall, band):
         "check for duplicate call on this band"
         stat,tm,pfx,sfx,call,xcall,rept = self.qparse(wcall)
-        return xcall in self.sfx2call(sfx, band) # vhf contest
-        #return call in self.sfx2call(sfx, band) # field day
+        #return xcall in self.sfx2call(sfx, band) # vhf contest
+        return call in self.sfx2call(sfx, band) # field day
 
     def logdup(self):
         "enter into dup log"
