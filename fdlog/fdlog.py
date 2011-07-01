@@ -1,163 +1,97 @@
-# fdlog.py Copyright 2002-2009 Alan K Biocca (WB6ZQZ)
+# fdlog.py Copyright Alan K Biocca (WB6ZQZ) www.fdlog.info
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLOG $Revision: 1.147 $ $Date: 2009/06/20 $ \n"\
-       "(c) 2002-9 by Alan Biocca (WB6ZQZ) (www.antennalaunchers.com/fdlog)\n\n"\
+prog = "FDLog1-148v 20010/08/18\n"\
+       "(c) 2002-2010 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
        "FDLOG is distributed under the GNU Public License\n"
 
 print prog
+
+print "VHF version dup checks on call/grid\n"
 
 about = """
 
 FDLOG.py
 
-A Field Day Log Program
-
-$Revision: 1.147$
-
-Version Tag: $Name:$
-
-$Date: 2009/06/20 $ UTC
+Field Day Log Program
 
 by Alan Biocca (WB6ZQZ)
 
-about 3500 lines of Python (www.python.org)
+about 3800 lines of Python (www.python.org)
 
 """
 
-# 1.147 2009/06/20 pre fd
-#
-#    changed GOTA Q limit from 400 to 500
-#    demo modes commented out
-#    80 meter cw frequency for w1aw changed (w1aw.txt)
-#
-#    qrp 5W from mains or generator has a multiplier 2 - same as 150W.
-#        This is not scored properly by the program yet.
-#    max of 20 transmitters is not enforced by the program
-#    educational activity is not scored by the program.
-#    complex GOTA bonus points are not handled by the program
+# Release Log below, suggestion list at end of file
 
-# 1.146B has GOTA call fixed. 6/15/2008 AKB
-#        gcall will accept a proper call with number, somewhere prior to this
-#        the number part of the regex got lost. This affects log output.
-
-# FD 2005 pre-meeting
+# Known Bug List
 #
-#  thought - make the RCVP button bring up a description of the errors there
-#  and the other buttons above that similar - bring up descriptions of what
-#  they mean..
+# some foreign callsigns not supported properly
+#   8a8xx
+#   need to change the way this works
+#   define a suffix as trailing letters
+#   prefix as anything ending in digits
+#   bring down a previous suffix with a character such as ' or .
 #
-# FD 2004 notes
-#   used version 1.125 on FD04.
-#   version 1.126 is the same with comments/bugs/etc added
-#
-# question - where are operator/station scores? make easier to see??
-#
-# feature request - vhf contest version (Kit), or general contests (Frank)
-#   have a .set contest variable
-#
-# feature request - editing previous input functionality *****
-#
-# feature request - editing current input (out of order input)
-#   cursor keys left, right, char->insert, delete
-#   tab to cycle words?
-#   refrain from syntax checking while editing?
-#
-# feature request - generate port number w/o field? what happens if port is
-#   already in use? dynamic port searching?? done.
-#
-# suggestion - better frequency chart. (Cal)
-#
-# issue - probably does not handle the 1d-1d contacts properly?
-#
-# consider band timeout - 30 minutes w/o contact releases band?
-#
-# old idea - Eric - balloon popup on band shows who is there
-
-
-# Short List
-#
-# add node list display after db read during startup?
-#
-# raise GUI to front during startup (tried, don't know how)
-#
-# someday should make any attempt to log q with callsign that is in the
-# operator list come up a dup without including them in the dup sheet!
-
-# thoughts 7/30/02
-#
-# mv info files to info dir
-# set up autodiscovery to build menus
-# do same for manuals
-# actually, let's move most of the doc stuff out
-# to a web tree under the program, and take it
-# completely out of the program proper
-
-# adif specs for eqsl.org
-#
-# problems - adif digital modes and satellite modes don't fit the fd model
-#   even voice.. need 'real' mode field. pulldown menu.
-#     add outgoing report to comments in parens
-#
-# <QSO_DATE:8> YYYYMMDD
-# <TIME_ON:4> HHMM only HH and MM are used
-# <CALL:6> up to 13 chars
-# <BAND:3>
-# <MODE:3>
-# <SAT_MODE:>
-# <LOG_PGM:15>FDLog by WB6ZQZ
-# <QSL_Comment:> up to 240 chars
-# <EOR>
-#
-# .ADI extension
-
-##Known Bug List
-##
-## some foreign callsigns not supported properly
-## 8a8xx
-## need to change the way this works
-## define a suffix as trailing letters
-## prefix as anything ending in digits
-## bring down a previous suffix with a character such as ' or .
-##
-##
-##  .ba command not showing stations on the bands
-##  
-##ToDo, Brainstorming List
-##
-##  remote test mode (this may be partially implemented)(change to tcp due to firewalls)
-##    .remip <addr> cmd
-##    add rem addrs to list
-##      time them out
-##    bcast to rem addrs
-##
-##  add phonetic alphabet display
-##  
-##  .st to popup
-##  
-##  limit call width in log display (done?)
-##  stop log processing every 10 seconds to get score. do less. count.
-##  dupcheck on 0 power not working. ok?
-##  
-##  document .set system better
-##  
-##  Weo suggested making Control-C text copy/paste work.
-##  Eric suggested show stations on band with bubble dialog
-##    (also q count etc)
-##  do better job of reporting net status & info
-##  gui    
-##    sta/oper/logr/pwr/q dsply in lower rt?
-##    delete log entry dialog box???
-##    more reports
-##  add natural power comment section to entry
-##  code cleanup
-##  greplog .grep <match>
-
+#  .ba command not showing stations on the bands
 
 release_log = """\
 
-$Log: fdlog.py,v $
+1-148v 2010/08/18 vhf version
+
+    dup checking includes call/grid
+    call column widened by 1 char to handle additional width
+    still need to enter something in the report, such as signal strength
+    fixed some small bugs in log color and editing due to dependence
+    on data in the scrollbox. May be only one line change to
+    make compatible with standard Field Day.
+
+    q just needs call/grid & band (use same mode for all Qs)
+    got it to work.
+    added a column to make call/grid fit
+    fixed a few bugs
+    newline on log missing, added it, later removed again
+
+    now two bugs
+    local log color=blue not working
+    - always black
+    edit left mouse click for edit on log not working
+    - probably getting error at some point and killing that thread/window
+    - problem was two functions that pick up chars from msg buffer
+    - adjust them by 1 char, worked
+
+    note that python is complaining about md5 and using hashlib instead.
+    snap 9, release 3 at this point
+
+    also after space input didn't echo call with full grid. Fixed.
+    converted from md5 library to hashlib. done.
+    snap 10 release 4
+
+    made call box in edit dig wider to accommodate 11 char call/grid
+    added code to disallow editing another node's Qs
+    after changing node id and restarting the q's still came up blue? bug?
+    test code was still in. fixed.
+    snap 11
+
+    comment cleanup. added more notes detail.
+
+
+1.147 2009/06/20 pre fd (used on FD 2009,2010)
+
+    changed GOTA Q limit from 400 to 500
+    demo modes commented out
+    80 meter cw frequency for w1aw changed (w1aw.txt)
+
+    qrp 5W from mains or generator has a multiplier 2 - same as 150W.
+        This is not scored properly by the program yet.
+    max of 20 transmitters is not enforced by the program
+    educational activity is not scored by the program.
+    complex GOTA bonus points are not handled by the program
+
+1.146B has GOTA call fixed. 6/15/2008 AKB
+        gcall will accept a proper call with number, somewhere prior to this
+        the number part of the regex got lost. This affects log output.
+
 Revision 1.146  2006/06/11 22:00:57  Alan Biocca
 Documentation - minor cleanup.
 Setup - added web push dir support. (also upload)
@@ -177,7 +111,8 @@ Documentation updated, minor edits to prog comments.
 
 Revision 1.141  2005/07/01 05:13:03  Alan Biocca
 Log autolookups added
-   Displays log lines matching the current call when duplicates found, or by typing in <call><return>
+   Displays log lines matching the current call when duplicates found,
+   or by typing in <call><return>
    This shows the info for this callsign collected on the other bands
 Stubbed in the beginnings of the .edit command
 
@@ -471,7 +406,7 @@ executable in one file. added cvs log into source. improved root title
 
 Program History (Pre-CVS)
 
-Original version in 19xx for HDOS/CPM...
+Original version in about 1974 for HDOS/CPM...
 
 Re-coding started 3/6/2002 Alan K Biocca WB6ZQZ (wb6zqz@arrl.net)
 Design based on fdlog.c, by same author starting in 1984.
@@ -522,7 +457,7 @@ def mhelp():
     viewtextv(key_help)
 
 getting_started = """
-FDLOG = Field Day Logging Program                    (c) 2002-4 A K Biocca
+FDLOG = Field Day Logging Program                    (c) 2002-2010 A K Biocca
 
   Welcome to WB6ZQZ's FDLOG program. This getting started dialog will review
 the essentials and get you started using the program.
@@ -842,7 +777,8 @@ for g in range(0,2400,100):
 
 #print tzchart
 
-import os,sys,time,string,re,time,thread,threading,socket,md5,random
+#import os,sys,time,string,re,time,thread,threading,socket,md5,random
+import os,sys,time,string,re,time,thread,threading,socket,hashlib,random
 from Tkinter import *
 
 
@@ -1091,20 +1027,22 @@ class qsodb:
 
     def prlogln(s):
         "convert log item to print format"
+        # note that edit and color read data from the editor so
+        # changing columns matters to these other functions.
         if s.band == '*QST':
-            ln = "%8s %5s %-40s %-3s %-3s %4s %s"%\
-                (s.date[4:11],s.band,s.rept[:40],s.oper,s.logr,s.seq,s.src)
+            ln = "%8s %5s %-41s %-3s %-3s %4s %s"%\
+                (s.date[4:11],s.band,s.rept[:41],s.oper,s.logr,s.seq,s.src)
         elif s.band == '*set':
-            ln = "%8s %5s %-10s %-29s %-3s %-3s %4s %s"%\
+            ln = "%8s %5s %-11s %-29s %-3s %-3s %4s %s"%\
                 (s.date[4:11],s.band,s.call[:10],s.rept[:29],\
                  s.oper,s.logr,s.seq,s.src)
         elif s.rept[:5] == '*del:':
-            ln = "%8s %5s %-6s %-33s %-3s %-3s %4s %s"%\
-                (s.date[4:11],s.band,s.call[:6],s.rept[:33],\
+            ln = "%8s %5s %-7s %-33s %-3s %-3s %4s %s"%\
+                (s.date[4:11],s.band,s.call[:7],s.rept[:33],\
                  s.oper,s.logr,s.seq,s.src)
         else:
-            ln = "%8s %5s %-10s %-24s %4s %-3s %-3s %4s %s"%\
-                (s.date[4:11],s.band,s.call[:10],s.rept[:24],\
+            ln = "%8s %5s %-11s %-24s %4s %-3s %-3s %4s %s"%\
+                (s.date[4:11],s.band,s.call[:11],s.rept[:24],\
                  s.powr,s.oper,s.logr,s.seq,s.src)
         return ln
 
@@ -1113,6 +1051,24 @@ class qsodb:
         l = self.filterlog("")
         for i in l:
             print i
+
+# adif specs for eqsl.org
+#
+# problems - adif digital modes and satellite modes don't fit the fd model
+#   even voice.. need 'real' mode field. pulldown menu.
+#     add outgoing report to comments in parens
+#
+# <QSO_DATE:8> YYYYMMDD
+# <TIME_ON:4> HHMM only HH and MM are used
+# <CALL:6> up to 13 chars
+# <BAND:3>
+# <MODE:3>
+# <SAT_MODE:>
+# <LOG_PGM:15>FDLog by WB6ZQZ
+# <QSL_Comment:> up to 240 chars
+# <EOR>
+#
+# .ADI extension
 
     def pradif(self):
         "print clean log in adif format"
@@ -1430,7 +1386,8 @@ class qsodb:
     def dupck(self, wcall, band):
         "check for duplicate call on this band"
         stat,tm,pfx,sfx,call,xcall,rept = self.qparse(wcall)
-        return call in self.sfx2call(sfx, band)
+        return xcall in self.sfx2call(sfx, band) # vhf contest
+        #return call in self.sfx2call(sfx, band) # field day
 
     def logdup(self):
         "enter into dup log"
@@ -1452,9 +1409,9 @@ class qsodb:
                 # dup only if Q and node type match (gota/not)
                 if (node == 'gota') == (self.src == 'gota'):
                     if self.bysfx.has_key(key):     # add to suffix db
-                        self.bysfx[key].append(call)
+                        self.bysfx[key].append(xcall)
                     else:
-                        self.bysfx[key] = [call]
+                        self.bysfx[key] = [xcall]
 ##                else: print "node type mismatch",node,self.src
         self.lock.release()
 
@@ -1701,7 +1658,8 @@ class netsync:
 
     rem_adr  = ""                                           # remote bc address
     
-    authkey = md5.new("")
+    #authkey = md5.new("")
+    authkey = hashlib.md5()
     pkts_rcvd,fills,badauth_rcvd,send_errs = 0,0,0,0
     hostname = socket.gethostname()
     my_addr = socket.gethostbyname(hostname)        # fails on some systems
@@ -1725,7 +1683,9 @@ class netsync:
         global authk
         authk = newauth
         seed = "2004070511111akb"               # change when protocol changes
-        self.authkey = md5.new(newauth+seed)
+        
+        #self.authkey = md5.new(newauth+seed)
+        self.authkey = hashlib.md5(newauth+seed)
         
     def auth(self,msg):
         "calc authentication hash"
@@ -1964,10 +1924,11 @@ class syncmsg:
             #print self.msgs[0]
             logw.configure(state=NORMAL)
             logw.see(END)
-            nod = self.msgs[0][69:80]               #color local entries
-#            print nod
+            nod = self.msgs[0][70:81]               #color local entries
+#            print nod,node
             if nod == node:
                 logw.insert(END,"%s\n"%self.msgs[0],"b")
+#                print "blue '%s' '%s'\n"%(nod,node)
             else:  
                 logw.insert(END,"%s\n"%self.msgs[0])
             logw.configure(state=DISABLED)
@@ -3257,10 +3218,15 @@ text.focus()
 
 def showthiscall(call):
     "show the log entries for this call"
+    p = call.split('/')
+#    print p[0]
     findany = 0
     m,n,g = qdb.cleanlog()
+#    print m.values()
     for i in m.values():
-        if call == i.call:
+#        print i.call
+        q = i.call.split('/')
+        if p[0] == q[0]:
             if findany == 0: text.insert(END,"\n")
             text.insert(END,"%s\n"%i.prlogln())
             findany = 1
@@ -3437,7 +3403,7 @@ def proc_key(ch):
                 kbuf = ""
                 if len(node) < 3:
                     text.insert(END," ERROR, set .node <call> before logging\n")
-                elif qdb.dupck(call, band):             # dup check
+                elif qdb.dupck(xcall, band):             # dup check
                     text.insert(END," DUP on band %s\n"%band)
                 else:
                     text.insert(END," QSL")
@@ -3488,7 +3454,7 @@ def proc_key(ch):
                 text.insert(END,sfx)# fall into call dup ck
                 
         if stat == 4:           # whole call, dup chk
-            if qdb.dupck(call,band):
+            if qdb.dupck(xcall,band):
                 text.insert(END," DUP on band %s"%band)
                 showthiscall(call)
                 kbuf = ""
@@ -3496,7 +3462,7 @@ def proc_key(ch):
                 kbuf += ' '
                 text.insert(END,ch)
                 if showthiscall(call):      # may want to make this optional due to speed issues
-                    text.insert(END,"%s "%call)
+                    text.insert(END,"%s "%xcall)
             return
 
     buf = kbuf + ch             # echo & add legal char to kbd buf
@@ -3581,7 +3547,7 @@ class Edit_Dialog(Toplevel):
 ##        self.me = Entry(top,width=1,font=fdbfont)
 ##        self.me.grid(row=4,column=1,sticky=W,padx=3,pady=2)
 ##        self.me.insert(0,qdb.byid[s].band[-1])
-        self.ce = Entry(top,width=9,font=fdbfont)
+        self.ce = Entry(top,width=11,font=fdbfont)
         self.ce.grid(row=5,column=1,sticky=W,padx=3,pady=2)
         self.ce.insert(0,qdb.byid[s].call)
         self.re = Entry(top,width=24,font=fdbfont)
@@ -3701,21 +3667,23 @@ def edit_dialog(node,seq):
 
 def log_select(e):
     'process mouse left-click on log window'
-    print e.x,e.y
+##    print e.x,e.y
     t = logw.index("@%d,%d"%(e.x,e.y))
-    print t
+##    print t
     line,col = t.split('.')
     line = int(line)
-    print line
+##    print line
     logtext = logw.get('%d.0'%line,'%d.82'%line)
-    print logtext
-    seq = logtext[64:68].strip()
+##    print logtext
+    seq = logtext[65:69].strip()
     if len(seq) == 0: return 'break'
     seq = int(seq)
     stn = logtext[69:].strip()
     if len(stn) == 0: return 'break'
     print stn,seq
-    edit_dialog(stn,seq)
+    if stn == node:             # only edit my own Q's
+        edit_dialog(stn,seq)
+    else: print "Cannot Edit other node's Q"
     return 'break'
 
 updatect = 0
@@ -3756,5 +3724,89 @@ net.bcast_now()
 saveglob()
 print "Bye"
 time.sleep(0.2)
+
+# Suggestions
+
+# FD 2005 pre-meeting
+#
+#  thought - make the RCVP button bring up a description of the errors there
+#  and the other buttons above that similar - bring up descriptions of what
+#  they mean..
+#
+# FD 2004 notes
+#   used version 1.125 on FD04.
+#   version 1.126 is the same with comments/bugs/etc added
+#
+# question - where are operator/station scores? make easier to see??
+#
+# feature request - vhf contest version (Kit), or general contests (Frank)
+#   have a .set contest variable
+#
+# feature request - editing previous input functionality *****
+#
+# feature request - editing current input (out of order input)
+#   cursor keys left, right, char->insert, delete
+#   tab to cycle words?
+#   refrain from syntax checking while editing?
+#
+# feature request - generate port number w/o field? what happens if port is
+#   already in use? dynamic port searching?? done.
+#
+# suggestion - better frequency chart. (Cal)
+#
+# issue - probably does not handle the 1d-1d contacts properly?
+#
+# consider band timeout - 30 minutes w/o contact releases band?
+#
+# old idea - Eric - balloon popup on band shows who is there
+
+
+# Short List
+#
+# add node list display after db read during startup?
+#
+# raise GUI to front during startup (tried, don't know how)
+#
+# someday should make any attempt to log q with callsign that is in the
+# operator list come up a dup without including them in the dup sheet!
+
+# thoughts 7/30/02
+#
+# mv info files to info dir
+# set up autodiscovery to build menus
+# do same for manuals
+# actually, let's move most of the doc stuff out
+# to a web tree under the program, and take it
+# completely out of the program proper
+
+##ToDo, Brainstorming List
+##
+##  remote test mode (this may be partially implemented)(change to tcp due to firewalls)
+##    .remip <addr> cmd
+##    add rem addrs to list
+##      time them out
+##    bcast to rem addrs
+##
+##  add phonetic alphabet display
+##  
+##  .st to popup
+##  
+##  limit call width in log display (done?)
+##  stop log processing every 10 seconds to get score. do less. count.
+##  dupcheck on 0 power not working. ok?
+##  
+##  document .set system better
+##  
+##  Weo suggested making Control-C text copy/paste work.
+##  Eric suggested show stations on band with bubble dialog
+##    (also q count etc)
+##  do better job of reporting net status & info
+##  gui    
+##    sta/oper/logr/pwr/q dsply in lower rt?
+##    delete log entry dialog box???
+##    more reports
+##  add natural power comment section to entry
+##  code cleanup
+##  greplog .grep <match>
 
 # eof
