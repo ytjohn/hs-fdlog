@@ -2,7 +2,11 @@ Field Day Log Program Manual
 
 is distributed under the GNU Public License
 
-fdlogman.txt: $Revision: 1.17 $
+fdlogman.txt: Revision: 1.18
+
+2011 updates
+
+.set contst FD or VHF changes dup check to include <call>/<grid> for VHF contest
 
 New for 2006
 

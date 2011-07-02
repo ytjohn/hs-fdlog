@@ -2,9 +2,9 @@
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLog1-148vf 2010/08/18\n"\
-       "(c) 2002-2010 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
-       "FDLOG is distributed under the GNU Public License\n"
+prog = "FDLog 1-149 2011/07/02\n"\
+       "(c) 2002-2011 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
+       "FDLog is distributed under the GNU Public License\n"
 
 print prog
 
@@ -24,11 +24,11 @@ about 3800 lines of Python (www.python.org)
 
 # line 1406/7 comment out appropriate line to change from fd to vhf version
 
-# major version data
-# 1 small c version 1984
-# 2 os9
-# 3 msdos
-# 4 python rewrite 2002
+# major version history
+# 1 small c version 1984 (H89 multiuser) (Alan WB6ZQZ)
+# 2 os9 port (multiuser) (Eric WD6CMU)
+# 3 msdos (single user) (Steve KA6S et al?)
+# 4 python 2.2 rewrite 2002 (networked) (Alan WB6ZQZ)
 # 5? major restructuring??
 
 # considering numbering
@@ -37,7 +37,7 @@ about 3800 lines of Python (www.python.org)
 # and release is autoincrement
 # and major and minor are manually managed?
 # note this does not affect files, fdlog.py is still executable
-# current version might become FDLogVHF-4.9.29.149
+# current version might become FDLog-4.9.29.149
 
 
 
@@ -56,6 +56,21 @@ about 3800 lines of Python (www.python.org)
 
 release_log = """\
 
+1-149 2011/07/02 contest set version
+
+    adding .set contst menu for (FD,VHF)
+        set global to contest type .set contst FD|VHF
+        adjust dup check to call for FD, and include /<grid> for VHF
+    adjust bands for VHF, include 900, drop below 6m?
+        dropping bands is tricky, leave for later.
+        did add 900 band however
+
+    setup for mercurial, opened Google Code project
+
+1-148vf 2011/06/25 fd version
+
+    commented out VHF code but kept other changes for 2011 fday
+
 1-148v 2010/08/18 vhf version
 
     dup checking includes call/grid
@@ -71,7 +86,7 @@ release_log = """\
     fixed a few bugs
     newline on log missing, added it, later removed again
 
-    now two bugs
+    now two bugs. (fixed)
     local log color=blue not working
     - always black
     edit left mouse click for edit on log not working
@@ -1403,7 +1418,8 @@ class qsodb:
     def dupck(self, wcall, band):
         "check for duplicate call on this band"
         stat,tm,pfx,sfx,call,xcall,rept = self.qparse(wcall)
-        #return xcall in self.sfx2call(sfx, band) # vhf contest
+        if gd.getv('contst') == "VHF":
+            return xcall in self.sfx2call(sfx, band) # vhf contest
         return call in self.sfx2call(sfx, band) # field day
 
     def logdup(self):
@@ -1895,6 +1911,7 @@ class global_data:
 gd = global_data()
 for name,desc,default,okre,maxlen in (
         ('class', '<n><A-F>       FD class (eg 2A)','2A',r'[1-9][0-9]?[a-fA-F]$',3),
+        ('contst','<text>         Contest (FD,VHF)','FD',r'[FDVH]{2,3}$',3),
         ('fdcall','<CALL>         FD call','',r'[a-zA-Z0-9]{3,6}$',6),
         ('gcall', '<CALL>         GOTA call','',r'[a-zA-Z0-9]{3,6}$',6),
         ('sect',  '<CC-Ccccc...>  ARRL section','<section>',r'[A-Z]{2,3}-[a-zA-Z ]{2,20}$',24),
@@ -2481,10 +2498,10 @@ def contestlog(pr):
     print "entry and log written to file",logfile
 
 
-# band set buttons (skip 900 to save screen space)
+# band set buttons
 # this can be customized
 
-bands = ('160','80','40','20','15','10','6','2','220','440','1200','sat','off')
+bands = ('160','80','40','20','15','10','6','2','220','440','900','1200','sat','off')
 modes = ('c','d','p')
 
 bandb = {}  # band button handles
