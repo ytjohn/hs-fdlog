@@ -12,13 +12,13 @@ information service.
 Introduction
 
   This is a complete rewrite of WB6ZQZ's Field Day Logging program. It is nearly 
-20 years old now, but this new version has many new features, 
+20 years old (in 2002), but this new version has many new features, 
 primary of which is the ability to synchronize the logfile database across 
 a network in a peer to peer fashion, avoiding single points of failure. 
 The expectation is that a wireless network will be used.
 
   To run this program you will need to install Python (or not). The development was
-done on win2k under Python 2.2-2.4 and Tkinter, but it should be able to run on Linux and
+done on win2k under Python 2.2-2.7 and Tkinter, but it should be able to run on Linux and
 the Mac with most features. Python is available from www.python.org. There is a
 directly executable version of FDLog called fdlogexe.zip. This is a larger download
 but it works without Python installed. It only works in Windows.
@@ -41,7 +41,7 @@ this in FDLog). Then all program time clocks will track that one.
   Getting the latest version of the program on Field Day will at our site is 
 handled by a small web server on one of the development machines. Other files 
 like Python and FD rules will be available there as well. See the Help/802.11 
-note for details. Python 2.2, 2.3 and 2.4 have been used successfully with the
+note for details. Python 2.2 to 2.7 have been used successfully with the
 software.
 
   Installing the FDLOG program is straightforward - all that is needed is a directory 
@@ -61,6 +61,6 @@ directory. For convenience you may want to create a shortcut on the desktop.
 
   Visit the help menu 'Help/Getting Started' for further instructions.
 
-Thanks, Alan Biocca, WB6ZQZ@ARRL.net
+Thanks, Alan Biocca, WB6ZQZ at ARRL.net
 
 eof
