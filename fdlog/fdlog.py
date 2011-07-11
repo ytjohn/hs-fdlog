@@ -2,7 +2,7 @@
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLog 1-149 2011/07/02\n"\
+prog = "FDLog 1-149-2 2011/07/11\n"\
        "(c) 2002-2011 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
        "FDLog is distributed under the GNU Public License\n"
 
@@ -21,8 +21,6 @@ by Alan Biocca (WB6ZQZ)
 about 3800 lines of Python (www.python.org)
 
 """
-
-# line 1406/7 comment out appropriate line to change from fd to vhf version
 
 # major version history
 # 1 small c version 1984 (H89 multiuser) (Alan WB6ZQZ)
@@ -56,12 +54,21 @@ about 3800 lines of Python (www.python.org)
 
 release_log = """\
 
+1-149-02 2011/7/11 bug fix
+
+    allow lowercase contest names
+    add 900 mhz to editing validation
+    note that report requires 4 chars in editor to save
+    editor shows unvalidated fields in yellow after save attempt
+    edit dialog box disappears on successful save, else stays with yellow
+    fields that need fixing.
+    
 1-149 2011/07/02 contest set version
 
     adding .set contst menu for (FD,VHF)
         set global to contest type .set contst FD|VHF
         adjust dup check to call for FD, and include /<grid> for VHF
-    adjust bands for VHF, include 900, drop below 6m?
+    adjust bands for VHF, include 900, (drop below 6m?)
         dropping bands is tricky, leave for later.
         did add 900 band however
 
@@ -1418,7 +1425,7 @@ class qsodb:
     def dupck(self, wcall, band):
         "check for duplicate call on this band"
         stat,tm,pfx,sfx,call,xcall,rept = self.qparse(wcall)
-        if gd.getv('contst') == "VHF":
+        if gd.getv('contst').upper() == "VHF":
             return xcall in self.sfx2call(sfx, band) # vhf contest
         return call in self.sfx2call(sfx, band) # field day
 
@@ -1911,7 +1918,7 @@ class global_data:
 gd = global_data()
 for name,desc,default,okre,maxlen in (
         ('class', '<n><A-F>       FD class (eg 2A)','2A',r'[1-9][0-9]?[a-fA-F]$',3),
-        ('contst','<text>         Contest (FD,VHF)','FD',r'[FDVH]{2,3}$',3),
+        ('contst','<text>         Contest (FD,VHF)','FD',r'fd|FD|vhf|VHF$',3),
         ('fdcall','<CALL>         FD call','',r'[a-zA-Z0-9]{3,6}$',6),
         ('gcall', '<CALL>         GOTA call','',r'[a-zA-Z0-9]{3,6}$',6),
         ('sect',  '<CC-Ccccc...>  ARRL section','<section>',r'[A-Z]{2,3}-[a-zA-Z ]{2,20}$',24),
@@ -3375,7 +3382,7 @@ def proc_key(ch):
             call = m.group(1)
 #            qdb.delete(nod,seq,reason)
             kbuf = ""
-            text.insert(END," sorry, edit not yet completed\n")
+            text.insert(END," to edit use mouse click on log entry\n")
             return
 
         if re.match(r'[.]node',kbuf):
@@ -3624,7 +3631,7 @@ class Edit_Dialog(Toplevel):
             error += 1
         t = self.be.get().strip()               # band mode
         self.be.configure(bg='white')
-        m = re.match(r'(160|80|40|20|15|10|6|2|220|440|1200|sat)[cdp]$',t)
+        m = re.match(r'(160|80|40|20|15|10|6|2|220|440|900|1200|sat)[cdp]$',t)
         if m:
             newband = t
             print newband
