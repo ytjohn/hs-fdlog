@@ -3640,7 +3640,7 @@ class Edit_Dialog(Toplevel):
             error += 1
         t = self.ce.get().strip()               # call
         self.ce.configure(bg='white')
-        m = re.match(r'[a-z0-9/]{3,10}$',t)
+        m = re.match(r'[a-z0-9/]{3,11}$',t)
         if m:
             newcall = t
             print newcall
