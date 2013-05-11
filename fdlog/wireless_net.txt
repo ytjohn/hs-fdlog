@@ -1,8 +1,15 @@
-Wireless Networking      3/2002
+Wireless Networking      3/2002 - 5/2013 Alan Biocca W6AKB
 
 802.11 Wireless Network
 
-$Revision: 1.14b $
+Revision: 1.15
+
+2013 Notes
+
+We always use an access point anymore. We bring a couple of them, one for the
+logging activity, one for internet access via cellular, and one spare. They
+operate from 12V batteries. LinkSys units have served us well, especially with
+third party operating systems.
 
 2005 Notes
 
