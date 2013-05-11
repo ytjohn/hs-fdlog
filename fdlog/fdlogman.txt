@@ -2,7 +2,13 @@ Field Day Log Program Manual
 
 is distributed under the GNU Public License
 
-fdlogman.txt: Revision: 1.18
+fdlogman.txt: Revision: 1.19
+
+2013 updates
+
+Adding sqlite database. The text journal is also there but is write only, not read back
+since the database contains the journal information needed to restart the program and reload
+the database.
 
 2011 updates
 
