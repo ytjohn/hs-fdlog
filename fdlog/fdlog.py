@@ -2,8 +2,8 @@
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLog 1-149-2 2011/07/11\n"\
-       "(c) 2002-2011 by Alan Biocca (WB6ZQZ) (www.fdlog.info)\n\n"\
+prog = "FDLog-4-1-150 2013/05/11\n"\
+       "Copyright 2002-2013 by Alan Biocca (W6AKB) (www.fdlog.info)\n\n"\
        "FDLog is distributed under the GNU Public License\n"
 
 print prog
@@ -16,7 +16,7 @@ FDLOG.py
 
 Field Day Log Program
 
-by Alan Biocca (WB6ZQZ)
+by Alan Biocca (W6AKB, formerly WB6ZQZ)
 
 about 3800 lines of Python (www.python.org)
 
@@ -30,12 +30,12 @@ about 3800 lines of Python (www.python.org)
 # 5? major restructuring??
 
 # considering numbering
-# FDLog-<major>-<minor>-<release>-<build>.zip
+# FDLog-<major>-<minor>-<build>.zip
 # where build is a snapshot, autoincrement (a freeze?)
-# and release is autoincrement
+# and build is monotonic
 # and major and minor are manually managed?
 # note this does not affect files, fdlog.py is still executable
-# current version might become FDLog-4.9.29.149
+
 
 
 
@@ -53,6 +53,11 @@ about 3800 lines of Python (www.python.org)
 #  .ba command not showing stations on the bands
 
 release_log = """\
+
+4-1-150 2013/05/11 database upgrade
+
+    adding sqlite database (keeping text file journal, but db is primary)
+    conforming to new numbering system
 
 1-149-02 2011/7/11 bug fix
 
@@ -134,283 +139,283 @@ release_log = """\
         the number part of the regex got lost. This affects log output.
 
 Revision 1.146  2006/06/11 22:00:57  Alan Biocca
-Documentation - minor cleanup.
-Setup - added web push dir support. (also upload)
-TimeSync - new program derived from Eric's that syncs system time from GPS.
+    Documentation - minor cleanup.
+    Setup - added web push dir support. (also upload)
+    TimeSync - new program derived from Eric's that syncs system time from GPS.
 
 Revision 1.145  2005/09/12 03:41:23  Alan Biocca
-Minor Comment Edits
+    Minor Comment Edits
 
 Revision 1.144  2005/09/12 03:17:11  Alan Biocca
-Added Q Edit Dialog Box. Major Effort
+    Added Q Edit Dialog Box. Major Effort
 
 Revision 1.143  2005/07/06 17:26:13  Alan Biocca
-Added Time Zone Chart
+    Added Time Zone Chart
 
 Revision 1.142  2005/07/01 12:58:56  Alan Biocca
-Documentation updated, minor edits to prog comments.
+    Documentation updated, minor edits to prog comments.
 
 Revision 1.141  2005/07/01 05:13:03  Alan Biocca
-Log autolookups added
-   Displays log lines matching the current call when duplicates found,
-   or by typing in <call><return>
-   This shows the info for this callsign collected on the other bands
-Stubbed in the beginnings of the .edit command
+    Log autolookups added
+    Displays log lines matching the current call when duplicates found,
+    or by typing in <call><return>
+    This shows the info for this callsign collected on the other bands
+    Stubbed in the beginnings of the .edit command
 
 Revision 1.140  2005/06/29 22:44:48  Alan Biocca
-Color log text from this node
-Restrict node to lowercase
+    Color log text from this node
+    Restrict node to lowercase
 
 Revision 1.139  2005/06/29 20:22:56  Alan Biocca
-Youth updated to take 1-2 digits
-Fixing case on set variables like callsigns initials etc
+    Youth updated to take 1-2 digits
+    Fixing case on set variables like callsigns initials etc
 
 Revision 1.138  2005/06/28 16:25:09  Alan Biocca
-Adjusted Add Participant dialog box.
+    Adjusted Add Participant dialog box.
 
 Revision 1.137  2005/06/28 16:22:06  Alan Biocca
-Add participants case problem fixed
-Added synonyms for ARRL sections for WAS
+    Add participants case problem fixed
+    Added synonyms for ARRL sections for WAS
 
 Revision 1.136  2005/06/26 19:01:10  Alan Biocca
-Fixed time level display. 3500 lines now.
-I ran this version FD 2005 on one node (changed during).
+    Fixed time level display. 3500 lines now.
+    I ran this version FD 2005 on one node (changed during).
 
 Revision 1.135  2005/06/19 03:44:56  Alan Biocca
-Minor changes to message in fdlog.
-Major upgrades to group_plan.
-Minor updates to group_handbook.
+    Minor changes to message in fdlog.
+    Major upgrades to group_plan.
+    Minor updates to group_handbook.
 
 Revision 1.134  2005/06/17 23:56:23  Alan Biocca
-Preparing for 2005-1 release.
-This version used on FD 2005.
+    Preparing for 2005-1 release.
+    This version used on FD 2005.
 
 Revision 1.133  2005/06/17 23:24:32  Alan Biocca
-Updates to accomodate ARRL rule changes over the past couple of years
-including GOTA, new bonuses, etc. Minor other cleanup. No substantive
-changes.
+    Updates to accomodate ARRL rule changes over the past couple of years
+    including GOTA, new bonuses, etc. Minor other cleanup. No substantive
+    changes.
 
 Revision 1.132  2005/06/13 23:45:20  Alan Biocca
-Fixed power type-in bug (text vs number).
-Changed power var to keep it a string at all times to fix typed-in power
-anomalies. Improved the Add Participants dialog box.
-Moved to new laptop.
+    Fixed power type-in bug (text vs number).
+    Changed power var to keep it a string at all times to fix typed-in power
+    anomalies. Improved the Add Participants dialog box.
+    Moved to new laptop.
 
 Revision 1.131  2004/07/05 18:48:43 akbiocca
-prep for release to web.
+    prep for release to web.
 
 Revision log redux - Thinning.
 
 Revision 1.130  2004/07/05 04:15:58  akbiocca
-Time Synch added. Clients track master node. Designate with .set tmast <node>
+    Time Synch added. Clients track master node. Designate with .set tmast <node>
 
 Revision 1.128  2004/06/29 23:52:43  akbiocca
-Plans for time sync made. some vars defined. minor misc cleanup.
+    Plans for time sync made. some vars defined. minor misc cleanup.
 
 Revision 1.127  2004/06/29 15:51:13  akbiocca
-Natural power bug fixed. My val() function is apparently a subtle problem
-but only in the tkinter case. Perhaps a conflict with TCL? Changed my func
-to ival(). 
+    Natural power bug fixed. My val() function is apparently a subtle problem
+    but only in the tkinter case. Perhaps a conflict with TCL? Changed my func
+    to ival(). 
 
 Revision 1.126  2004/06/28 18:42:56  akbiocca
-Comments from FD 2004 added.
+    Comments from FD 2004 added.
 
 Revision 1.125  2004/06/14 02:13:12  akbiocca
-added seed to authkey. updated group handbook. Used for FD 2004
+    added seed to authkey. updated group handbook. Used for FD 2004
 
 Revision 1.124  2004/06/13 15:19:52  akbiocca
-improving documentation on reporting. fixed power command updating screen.
-some testing. no substantive changes.
+    improving documentation on reporting. fixed power command updating screen.
+    some testing. no substantive changes.
 
 Revision 1.122  2004/06/10 20:42:46  akbiocca
-adjusting messages. testing. 
+    adjusting messages. testing. 
 
 Revision 1.121  2004/06/10 03:39:38  akbiocca
-including c.bat and setup.py for the py2exe config. updated handbook.
-minor edits elsewhere. 
+    including c.bat and setup.py for the py2exe config. updated handbook.
+    minor edits elsewhere. 
 
 Revision 1.120  2004/06/10 02:37:24  akbiocca
-Setup for py2exe, which appears to work. 
+    Setup for py2exe, which appears to work. 
 
 Revision 1.119  2004/06/09 18:15:53  akbiocca
-Added GPL. minor doc edits.
+    Added GPL. minor doc edits.
 
 Revision 1.118  2004/06/09 16:38:54  akbiocca
-renaming group files. fdlog startup improvement continues. documentation
-cleanup continues. testing continues, is partial at this time. no substantive
-changes have been made.
+    renaming group files. fdlog startup improvement continues. documentation
+    cleanup continues. testing continues, is partial at this time. no substantive
+    changes have been made.
 
 Revision 1.116  2004/06/09 02:59:21  akbiocca
-checkpoint. fdlog startup altered to be more interactive, straightforward.
-testing minimal at this point, but changes not fundamental. text files
-edited for some 2004 info, but not final. 
+    checkpoint. fdlog startup altered to be more interactive, straightforward.
+    testing minimal at this point, but changes not fundamental. text files
+    edited for some 2004 info, but not final. 
 
 Revision 1.115  2003/07/20 21:39:15  akbiocca
-WAS Logic improved to handle can, dx. This likely vsn for 2003 submittal.
+    WAS Logic improved to handle can, dx. This likely vsn for 2003 submittal.
 
 Revision 1.114  2003/07/19 05:39:43  akbiocca
-Improved Worked All States display. Fixed bug in Vermont.
+    Improved Worked All States display. Fixed bug in Vermont.
 
 Revision 1.113  2003/07/18 21:37:55  akbiocca
-Updating old comments, removing some old code. Improvement in recognizing
-worked all states. Improving report for FD Entry. Partially tested.
+    Updating old comments, removing some old code. Improvement in recognizing
+    worked all states. Improving report for FD Entry. Partially tested.
 
 Revision 1.112  2003/07/17 05:26:22  akbiocca
-WAS rpt added to fd log.
+    WAS rpt added to fd log.
 
 Revision 1.111  2003/07/16 14:08:20  akbiocca
-Changed text inputs such as w1aw message, nts messages, etc to 'file input'.
-These fixed filenames are searched for and if existing they are included
-in the FD report.
+    Changed text inputs such as w1aw message, nts messages, etc to 'file input'.
+    These fixed filenames are searched for and if existing they are included
+    in the FD report.
 
-w1aw_msg.txt
-nts_msg.txt
-nts_rly0.txt to nts_rly9.txt (one msg per file)
-soapbox.txt
-media.txt
+    w1aw_msg.txt
+    nts_msg.txt
+    nts_rly0.txt to nts_rly9.txt (one msg per file)
+    soapbox.txt
+    media.txt
 
-Added example of nts messages in nts_eg.txt to copy and modify.
+    Added example of nts messages in nts_eg.txt to copy and modify.
 
 Revision 1.110  2003/07/15 03:55:06  akbiocca
-Linux improvement. Changed font calcs. Linux needs about size 20,
-Windoze 10. Changed grid argument col to column for increased
-portability. This after FD03, previous vsn was used for FD03.
+    Linux improvement. Changed font calcs. Linux needs about size 20,
+    Windoze 10. Changed grid argument col to column for increased
+    portability. This after FD03, previous vsn was used for FD03.
 
 Revision 1.109  2003/06/22 17:13:27  akbiocca
-Updated for 2003. Authkey sets data filename and port. Used for FD 2003.
+    Updated for 2003. Authkey sets data filename and port. Used for FD 2003.
 
 Revision 1.108  2003/06/10 13:49:54  akbiocca
-Prep for FD 2003. GOTA bonus changed. Class F added. Untested.
+    Prep for FD 2003. GOTA bonus changed. Class F added. Untested.
 
 Revision 1.107  2002/06/22 07:01:13  akbiocca
-Rich found bug in socket addr list. Tested partially w Mac, Sony laptops.
+    Rich found bug in socket addr list. Tested partially w Mac, Sony laptops.
 
 Revision 1.106  2002/06/15 16:11:21  akbiocca
-checkpoint. minor changes to prog, plan, handbook. moved manuals to
-subdir. make this beta 6.
+    checkpoint. minor changes to prog, plan, handbook. moved manuals to
+    subdir. make this beta 6.
 
 Revision 1.105  2002/05/28 13:36:50  akbiocca
-fdlog fixes to help buttonsize. adding remote bcast (incomplete?).
- changed station to node.. prog seems to run, not well tested.
+    fdlog fixes to help buttonsize. adding remote bcast (incomplete?).
+    changed station to node.. prog seems to run, not well tested.
 
 Revision 1.103  2002/05/13 12:23:46  akbiocca
-small mods to handbook & plan.
-addded grid.sticky=NSEW to all buttons hoping to fix the mac.
+    small mods to handbook & plan.
+    addded grid.sticky=NSEW to all buttons hoping to fix the mac.
 
 Revision 1.102  2002/05/12 22:29:25  akbiocca
-updated group plan with meeting info. first draft.
-update group handbook.
-updated program somewhat. chop print fields that were overflowing.
-improved parsing to reject some bad calls. fixed .h command triggering
-on kh6 callsigns. changed a lot of re.search to re.match calls.
-started to work on internet test feature, not complete.
-this version not significantly tested, but probably works.
+    updated group plan with meeting info. first draft.
+    update group handbook.
+    updated program somewhat. chop print fields that were overflowing.
+    improved parsing to reject some bad calls. fixed .h command triggering
+    on kh6 callsigns. changed a lot of re.search to re.match calls.
+    started to work on internet test feature, not complete.
+    this version not significantly tested, but probably works.
 
 Revision 1.101  2002/05/11 03:17:00  akbiocca
-Eric fixed linux fail to bcast. Prelim tests on Linux passed. Win2k tested.
-This was Beta 5, tested at the FD 2002 mtg.
+    Eric fixed linux fail to bcast. Prelim tests on Linux passed. Win2k tested.
+    This was Beta 5, tested at the FD 2002 mtg.
 
 Revision 1.99  2002/05/09 05:01:54  akbiocca
-testing. fixed bug w power on first startup. cleaned comments.
-tested w 2 stations wireless. ok so far. fixed site info typo.
+    testing. fixed bug w power on first startup. cleaned comments.
+    tested w 2 stations wireless. ok so far. fixed site info typo.
 
 Revision 1.97  2002/05/08 13:55:52  akbiocca
-op, log pulldowns. fixed global sets. testing not complete. docn upgraded.
-cleaned up data handling. lots of code commented out in cleanup, will be
-deleted soon. changed to initials for op, log. added space to other column.
-added dialog for adding participants. power select menu and entry w check
-for natural. converted stub view funcs to lambdas. added online equipment
-manuals, 746 and pro. upgraded site info file.
+    op, log pulldowns. fixed global sets. testing not complete. docn upgraded.
+    cleaned up data handling. lots of code commented out in cleanup, will be
+    deleted soon. changed to initials for op, log. added space to other column.
+    added dialog for adding participants. power select menu and entry w check
+    for natural. converted stub view funcs to lambdas. added online equipment
+    manuals, 746 and pro. upgraded site info file.
 
 Revision 1.95  2002/04/23 03:30:04  akbiocca
-added ARRL band plan in help menu.
+    added ARRL band plan in help menu.
 
 Revision 1.94  2002/04/22 14:51:52  akbiocca
-lots of edits. reorganized revision history, made a menu to display it.
-added equipment help submenu. reorg help menu. reorg and update of much
-of the doc'n. not complete. expanded site info. added access point to
-wireless doc. added root window titles to subwindows.
+    lots of edits. reorganized revision history, made a menu to display it.
+    added equipment help submenu. reorg help menu. reorg and update of much
+    of the doc'n. not complete. expanded site info. added access point to
+    wireless doc. added root window titles to subwindows.
 
 Revision 1.93  2002/04/21 08:33:30  akbiocca
-dialog + wasrpt cleanup. sfx report improved.
+    dialog + wasrpt cleanup. sfx report improved.
 
 Revision 1.92  2002/04/20 22:36:34  akbiocca
-added Worked All States Report. measures progress to worked all states.
-requires correct abbreviations to be used for ARRL sections.
+    added Worked All States Report. measures progress to worked all states.
+    requires correct abbreviations to be used for ARRL sections.
 
 Revision 1.91  2002/04/19 03:41:30  akbiocca
-added a few files. propagation, site info, nts manual. cleaned up docs
-regarding control-c and control-z. note that the new text files need
-a bit of work, they are frameworks at this time.
+    added a few files. propagation, site info, nts manual. cleaned up docs
+    regarding control-c and control-z. note that the new text files need
+    a bit of work, they are frameworks at this time.
 
 Revision 1.90  2002/04/19 03:16:16  akbiocca
-added python web help menu item. disabled control-c,z (suggested by Weo WN6I).
-added set cursor on mouse-1-up to keep it where it belongs.
+    added python web help menu item. disabled control-c,z (suggested by Weo WN6I).
+    added set cursor on mouse-1-up to keep it where it belongs.
 
 revision 1.86  2002/04/17 12:47:06  akbiocca
-improved time on band accuracy. cleanup.
+    improved time on band accuracy. cleanup.
 
 Revision 1.85  2002/04/15 12:38:34  akbiocca
-added time on band indicator in root title bar.
+    added time on band indicator in root title bar.
 
 Revision 1.84  2002/04/15 12:09:30  akbiocca
-view text boxes made resizable, and independent (not transient).
-this allows them to be iconified and not on top.
+    view text boxes made resizable, and independent (not transient).
+    this allows them to be iconified and not on top.
 
 Revision 1.83  2002/04/15 05:28:30  akbiocca
-made main window resizable.
+    made main window resizable.
 
 Revision 1.82  2002/04/15 00:30:58  akbiocca
-release prep beta 4. tagged beta 4.
+    release prep beta 4. tagged beta 4.
 
 Revision 1.81  2002/04/14 21:26:26  akbiocca
-added bands.pdf, imported group_handbook.txt.
+    added bands.pdf, imported group_handbook.txt.
 
 Revision 1.80  2002/04/14 18:46:41  akbiocca
-w1aw schedule added.
-improved set command help.
+    w1aw schedule added.
+    improved set command help.
 
 Revision 1.79  2002/04/14 16:53:29  akbiocca
-changed to UTC time.
+    changed to UTC time.
 
 Revision 1.78  2002/04/14 15:42:15  akbiocca
-added .testq test qso generator.
+    added .testq test qso generator.
 
 Revision 1.75  2002/04/14 02:21:54  akbiocca
-fixed bug in delete, present in beta 3.
-added more .set commands.
+    fixed bug in delete, present in beta 3.
+    added more .set commands.
 
 Revision 1.74  2002/04/13 20:32:11  akbiocca
-.set commands added. global data sharing, load/reloading.
+    .set commands added. global data sharing, load/reloading.
 
 Revision 1.73  2002/04/13 13:50:47  akbiocca
-prep for beta-3. (Tagged Beta-3)
+    prep for beta-3. (Tagged Beta-3)
 
 Revision 1.71  2002/04/12 17:16:39  akbiocca
-fixed bug in qst to allow question mark in char set there without
-triggering help. improved age out message to include both from and
-station the info is about.
+    fixed bug in qst to allow question mark in char set there without
+    triggering help. improved age out message to include both from and
+    station the info is about.
 
 Revision 1.70  2002/04/12 13:17:55  akbiocca
-qst messaging working, added to docn, qst log report added.
+    qst messaging working, added to docn, qst log report added.
 
-revision 1.67  2002/04/12 03:21:19  akbiocca
-improved net error indicators. working fairly well.
+Revision 1.67  2002/04/12 03:21:19  akbiocca
+    improved net error indicators. working fairly well.
 
 Revision 1.66  2002/04/11 13:51:39  akbiocca
-added logs menu w per band/mode filtering.
+    added logs menu w per band/mode filtering.
 
-revision 1.64  2002/04/11 05:39:19  akbiocca
-changed to age timeout of band data. pkt struct chgd slightly. 
+Revision 1.64  2002/04/11 05:39:19  akbiocca
+    changed to age timeout of band data. pkt struct chgd slightly. 
 
-revision 1.62  2002/04/09 23:37:02  akbiocca
-added need fill message on CW/D button when fill list length is nonzero.
-this and the NO PKTS indicators are on a 10 second update cycle. 
+Revision 1.62  2002/04/09 23:37:02  akbiocca
+    added need fill message on CW/D button when fill list length is nonzero.
+    this and the NO PKTS indicators are on a 10 second update cycle. 
 
 Revision 1.57  2002/04/08 14:22:54  akbiocca
-included about and getting started into the prog file. plan is to keep
-the program self contained in one file for basic minimal doc'n and
-executable in one file. added cvs log into source. improved root title
+    included about and getting started into the prog file. plan is to keep
+    the program self contained in one file for basic minimal doc'n and
+    executable in one file. added cvs log into source. improved root title
 
 1.56 redup on sta chg. getting good!
 
@@ -496,10 +501,10 @@ def mhelp():
     viewtextv(key_help)
 
 getting_started = """
-FDLOG = Field Day Logging Program                    (c) 2002-2010 A K Biocca
+FDLOG = Field Day Logging Program            Copyright 2002-2013 Alan K Biocca
 
-  Welcome to WB6ZQZ's FDLOG program. This getting started dialog will review
-the essentials and get you started using the program.
+  Welcome to the W6AKB (formerly WB6ZQZ) FDLOG program. This getting started
+dialog will review the essentials and get you started using the program.
 
   FDLOG is distributed under the GNU Public License. A copy is included
 in the distribution package (gnu.txt) or can be found at www.gnu.org.
@@ -967,7 +972,76 @@ def exin(op):
     if m:
         r = m.group(1)
     return r
-    
+
+
+
+# sqlite database modifications
+#
+# use sqlite as the pivotal journal file database
+# do the various important transactions there
+# should avoid the locking needed now, the database has the locks
+# write it out and then read it back from there
+# so the database becomes the central collaboration point
+#
+# do db in parallel w ascii journal, ascii journal becomes a write only file
+
+
+import sqlite3
+
+class SQDB:
+    def __init__(self):
+        self.dbPath = logdbf[0:-4] + '.sq3'
+        print "Using database",self.dbPath
+       
+        self.sqdb = sqlite3.connect(self.dbPath)  # connect to the database
+        self.sqdb.row_factory = sqlite3.Row   # namedtuple_factory
+        self.curs = self.sqdb.cursor()      # make a database connection cursor
+        sql = "create table if not exists qjournal(src text,seq int,date text,band text,call text,rept text,powr text,oper text,logr text,primary key (src,seq))"
+        self.curs.execute(sql)
+        self.sqdb.commit()
+        #create table qsos, index by call,band,mode (varies by contest)
+        #create table score phone, cw, data
+        #create table station, operator, logger, power, 
+        #return self
+    def readLog(self): # ,srcId,srcIdx):            # returns list of log journal items
+        print "Loading log journal from sqlite database"
+        sql = "select * from qjournal"
+        result = self.curs.execute(sql)
+        nl = []
+        for r in result:
+            #print dir(r)
+            nl.append("|".join(('q',r['src'],str(r['seq']),r['date'],r['band'],r['call'],r['rept'],r['powr'],r['oper'],r['logr'],'')))
+        #print nl
+        return nl
+    def next(self):                         # get next item from db in text format
+        n = self.result
+        nl = "|".join(n.src,n['seq'],n['date'],n['band'],n['call'],n['rept'],n['powr'],n['oper'],n['logr'])
+        return nl
+    def log(self,n):                        # add item to journal logfile table (and other tables...)
+        parms = (n.src,n.seq,n.date,n.band,n.call,n.rept,n.powr,n.oper,n.logr)
+        #start commit, begin transaction
+        sql = "insert into qjournal (src,seq,date,band,call,rept,powr,oper,logr) values (?,?,?,?,?,?,?,?,?)"
+        self.curs.execute(sql,parms)
+        #sql = "insert into qsos values (src,seq,date,band,call,sfx,rept,powr,oper,logr),(?,?,?,?,?,?,?,?,?,?)"
+        #self.cur(sql,parms)
+        # update qso count, scores? or just use q db count? this doesn't work well for different weights
+        # update sequence counts for journals?
+        self.sqdb.commit()                       # do the commit
+
+                                            # might want to use one fixed database, add a column for the sub-set that we're using
+                                            # have a pulldown to select the particular contest/db to use
+
+
+# interesting idea for future, store sql in the journal...
+# probably a subset, but basically ready to execute sql with some encapsulation
+# for the arguments
+
+
+
+
+
+
+
 # qso database class
 
 class qsodb:
@@ -982,7 +1056,8 @@ class qsodb:
         return n
         
     def tolog(self):            # make log file entry
-        self.lock.acquire()
+        sqdb.log(self)          # to database
+        self.lock.acquire()     # and to ascii journal file as well
         fd = file(logdbf,"a")
         fd.write("\nq|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % \
             (self.src,self.seq,
@@ -1001,17 +1076,22 @@ class qsodb:
     def loadfile(self):
         print "Loading Log File"
         i,s,log = 0,0,[]
-        try:
-            fd = file(logdbf,"r")           # initialize databases
-            while 1:
-                ln = fd.readline()          # read a line and put in list
-                if not ln: break
-                log.append(ln)
-            fd.close()
-        except IOError,e:
-            s += 1
+        global sqdb                         # setup sqlite database connection
+        sqdb = SQDB()
+        log = sqdb.readLog()                # read the database
+        
+##        try:                              # read from journal file (skipping)
+##            fd = file(logdbf,"r")           # initialize databases
+##            while 1:
+##                ln = fd.readline()          # read a line and put in list
+##                if not ln: break
+##                log.append(ln)
+##            fd.close()
+##        except IOError,e:
+##            s += 1
 
         #log.sort()                          # process in time order xx??
+        
         for ln in log:
             if ln[0] == 'q':                # qso db line
                 r = qdb.new(0)
@@ -1022,6 +1102,7 @@ class qsodb:
                     print "  error, item skipped: ",e
                     print "    in:",ln
                     s += 1
+##                sqdb.log(r)               # push a copy from the file into the database (temporary for transition)
         if i == 0 and s == 1:
             print "  Log file not found, must be new"
         else:
@@ -2956,7 +3037,7 @@ if port_offset == 0: port_offset = ival(authk[0:3])*7
 port_base += port_offset
 print "Using Network Port:",port_base
 logdbf = "fdlog%s.fdd"%(authk[0:3])
-print "Using Log Data file:",logdbf
+print "Writing Log Journal file:",logdbf
 
 print "Starting Network"
 net = netsync()                 # setup net
