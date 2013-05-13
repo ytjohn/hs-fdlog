@@ -1,20 +1,18 @@
-# fdlog.py Copyright Alan K Biocca (WB6ZQZ) www.fdlog.info
+# fdlog.py Copyright Alan K Biocca (W6AKB) www.fdlog.info
 
 print "\nField Day Log Program Starting up\n"
 
-prog = "FDLog-4-1-150 2013/05/11\n"\
+prog = "FDLog-4-1-151 2013/05/11\n"\
        "Copyright 2002-2013 by Alan Biocca (W6AKB) (www.fdlog.info)\n\n"\
        "FDLog is distributed under the GNU Public License\n"
 
 print prog
 
-#print "VHF version dup checks on call/grid\n"
-
 about = """
 
-FDLOG.py
+fdlog.py
 
-Field Day Log Program
+FDLog = Field Day Log Program (www.fdlog.info)
 
 by Alan Biocca (W6AKB, formerly WB6ZQZ)
 
@@ -23,20 +21,19 @@ about 3800 lines of Python (www.python.org)
 """
 
 # major version history
-# 1 small c version 1984 (H89 multiuser) (Alan WB6ZQZ)
-# 2 os9 port (multiuser) (Eric WD6CMU)
-# 3 msdos (single user) (Steve KA6S et al?)
-# 4 python 2.2 rewrite 2002 (networked) (Alan WB6ZQZ)
-# 5? major restructuring??
+#   1 small c version 1984 (H89 multiuser) (Alan WB6ZQZ)
+#   2 os9 port (multiuser) (Eric WD6CMU)
+#   3 msdos port (single user) (Steve KA6S et al?) (who all worked on this?)
+#   4 python 2.2 rewrite 2002 (networked) (Alan W6AKB/WB6ZQZ)
+#   5? future major restructuring??
 
-# considering numbering
-# FDLog-<major>-<minor>-<build>.zip
-# where build is a snapshot, autoincrement (a freeze?)
-# and build is monotonic
-# and major and minor are manually managed?
-# note this does not affect files, fdlog.py is still executable
-
-
+# new numbering scheme
+#   FDLog-<major>-<minor>-<release>.zip
+#   where build is a snapshot, autoincrement (sort of)
+#   and release is monotonic, increased when released or checkpointed
+#   and major and minor are manually managed
+#   minor is for protocol changes, and other significant changes
+#   note this does not affect files, fdlog.py is still executable
 
 
 # Release Log below, suggestion list at end of file
@@ -50,19 +47,33 @@ about 3800 lines of Python (www.python.org)
 #   prefix as anything ending in digits
 #   bring down a previous suffix with a character such as ' or .
 #
-#  .ba command not showing stations on the bands
+# .ba command not showing stations on the bands
 
 release_log = """\
 
-4-1-150 2013/05/11 database upgrade
+4-1-151 more sqlite beta 5/2013
 
-    adding sqlite database (keeping text file journal, but db is primary)
-    conforming to new numbering system
+    make database fdlog.sq3 for global value storage (replacing textfile)
+    store time offset in global database so a restart doesn't jump the time
+    added in memory cache for global database to reduce file i/o
+    changing build to release, only increments when
+      released to others or checkpointed
+    added code to ignore short w1aw file placeholder in scoring final entry
+    changed FDLOG to FDLog
+    various general tidying up (minor)
+    changed (c) to Copyright since (c) is not legal
+    commented out remote UDP broadcast code (unfinished code)
+    considering putting in remote TCP code instead
 
-1-149-02 2011/7/11 bug fix
+4-1-150 sqlite beta 2013/05/11 database upgrade
+
+    adding sqlite log database (keeping text file journal, but db is primary)
+    conforming to proposed new version numbering system
+
+1-149-02 2011/07/11 bug fix
 
     allow lowercase contest names
-    add 900 mhz to editing validation
+    added 900 mhz to editing validation
     note that report requires 4 chars in editor to save
     editor shows unvalidated fields in yellow after save attempt
     edit dialog box disappears on successful save, else stays with yellow
@@ -352,7 +363,7 @@ Revision 1.90  2002/04/19 03:16:16  akbiocca
     added python web help menu item. disabled control-c,z (suggested by Weo WN6I).
     added set cursor on mouse-1-up to keep it where it belongs.
 
-revision 1.86  2002/04/17 12:47:06  akbiocca
+Revision 1.86  2002/04/17 12:47:06  akbiocca
     improved time on band accuracy. cleanup.
 
 Revision 1.85  2002/04/15 12:38:34  akbiocca
@@ -478,7 +489,7 @@ v0.01 started 3/2002. chose python as it has the features
 """
 
 key_help = """
-FDLOG.py Help       File/Exit or Exit Button to Quit
+FDLog.py Help       File/Exit or Exit Button to Quit
                     ESC to abort input line
                     .h<return> for command help
                      
@@ -501,12 +512,12 @@ def mhelp():
     viewtextv(key_help)
 
 getting_started = """
-FDLOG = Field Day Logging Program            Copyright 2002-2013 Alan K Biocca
+FDLog = Field Day Logging Program            Copyright 2002-2013 Alan K Biocca
 
-  Welcome to the W6AKB (formerly WB6ZQZ) FDLOG program. This getting started
+  Welcome to the W6AKB (formerly WB6ZQZ) FDLog program. This getting started
 dialog will review the essentials and get you started using the program.
 
-  FDLOG is distributed under the GNU Public License. A copy is included
+  FDLog is distributed under the GNU Public License. A copy is included
 in the distribution package (gnu.txt) or can be found at www.gnu.org.
 
   Starting the program by either double clicking on fdlog.py, or typing
@@ -548,7 +559,7 @@ and the Input Window.
   The window title bar displays a lot of information. Some items may not have
 values and so will not display until they do. From left to right:
 
-    FDLOG                       program name
+    FDLog                       program name
     2A SV-Sacramento Valley     field day class and section (the report)
     Node: wb6zqz-1              node id
     Time on Band 0:23           time on this band in hours, minutes
@@ -615,10 +626,10 @@ points).
   The operator and logger are recorded in the log. Use the Operator and Logger
 buttons to select.
 
-  The power, operator, logger, and authentication data are stored in a file with
-the log program on normal exit, and reloaded on restart to minimize re-entering.
-The band is not restored, so it will have to be re-selected after restarting the
-program.
+  The power, operator, logger, and authentication data are stored in a database
+with the log program on normal exit, and reloaded on restart to minimize
+re-entering. The band is not restored, so it will have to be re-selected after
+restarting the program.
 
   Band is set by clicking on the desired gray band button or typing a command
 ".band  <band><mode>". Bands are 160/80/40/20/15/10/6/2 meters or 220/440/1200
@@ -652,7 +663,7 @@ all states function to be accurate.
   aw<space> ==> ['w2aw']         <shows w2aw was worked on this band>
   w1<space> ==> w1aw<space>_     <waiting for report, not a dup>
   <report>  ==> w1aw 2a nc_      <waiting for return to log the Q>
-  <return>  ==> w1aw 2a nc QSL   <entered into db>
+  <return>  ==> w1aw 2a nc QSL   <entered into log db>
 
   ESCape will cancel an entry in progress and clear the input line.
 
@@ -661,7 +672,9 @@ all states function to be accurate.
   An incorrectly entered Q can be deleted with:
 ".delete <node> <sequencenum> <reason>". This command actually places
 a 'delete' entry in the log which is used to filter clean logs. The
-node and sequence number are the right two log columns.
+node and sequence number are the right two log columns. OR an easier
+techique is to click on the log entry and select DELETE in the popup
+box. Editing of the log entry this way is also possible.
 
   When taking a break in operations, set the band to 'off' with the "off"
 button or the ".off" command. This makes the band available to others.
@@ -711,7 +724,7 @@ are detailed below:
              Restarting the program or rebooting may cure it.
              
   RCVP FAIL  Ten seconds have passed without receiving any packets. This
-             indicates that no other packets from a FDLOG program are
+             indicates that no other packets from a FDLog program are
              being received within the time window. This could indicate
              a problem with the network or auth key, or it could be normal
              if this is the only computer on this network running the
@@ -908,10 +921,15 @@ class clock_class:
     errorn = 0      # number of time values in errors sum
     srclev = 10     # current best time source level
 
+    #offset = globDb.get('toffset',4)  # get initial from global database
+    #print "Initial Time Offset",offset
+    
     lock = threading.RLock()    # sharing lock
 
     def update(self):
         "periodic clock update every 30 seconds"
+        self.offset = float(globDb.get('toffset',0))  # get from global database
+
         self.lock.acquire()          # take semaphore
         if node == string.lower(gd.getv('tmast')):
             if self.level != 0: print "Time Master"
@@ -934,7 +952,9 @@ class clock_class:
 
             self.srclev = 10
             
-        self.lock.release()          # release sem
+        self.lock.release()               # release sem
+        
+        globDb.put('toffset',self.offset) # save in global database
 
     def calib(self,fnod,stml,td):
         "process time info in incoming pkt"
@@ -959,6 +979,7 @@ class clock_class:
 
         if adj > rate: adj = rate
         elif adj < -rate: adj = -rate
+        self.offset = float(globDb.get('toffset',0))  # get from global database
         self.offset += adj
         self.adjusta -= adj
     #    print "Slewing clock",adj,"to",self.offset
@@ -975,15 +996,16 @@ def exin(op):
 
 
 
-# sqlite database modifications
+# sqlite database upgrade
 #
-# use sqlite as the pivotal journal file database
+# use sqlite as the primary journal file database
 # do the various important transactions there
 # should avoid the locking needed now, the database has the locks
 # write it out and then read it back from there
 # so the database becomes the central collaboration point
 #
 # do db in parallel w ascii journal, ascii journal becomes a write only file
+#   some folks use this file for other purposes
 
 
 import sqlite3
@@ -1035,11 +1057,6 @@ class SQDB:
 # interesting idea for future, store sql in the journal...
 # probably a subset, but basically ready to execute sql with some encapsulation
 # for the arguments
-
-
-
-
-
 
 
 # qso database class
@@ -1172,6 +1189,7 @@ class qsodb:
         for i in l:
             print i
 
+
 # adif specs for eqsl.org
 #
 # problems - adif digital modes and satellite modes don't fit the fd model
@@ -1192,7 +1210,7 @@ class qsodb:
 
     def pradif(self):
         "print clean log in adif format"
-        pgm = "FDLOG by WB6ZQZ (www.qsl.net/wb6zqz)"
+        pgm = "FDLog by WB6ZQZ (www.qsl.net/wb6zqz)"
         print "<LOG_PGM:%d>%s"%(len(pgm),pgm)
         m,n,g = self.cleanlog()
         for i in n.values() + g.values():
@@ -1614,7 +1632,7 @@ class qsodb:
 class node_info:
     nodes = {}
     nodinfo = {}
-    rembcast = {}
+##    rembcast = {}
     lock = threading.RLock()                    # reentrant sharing lock
 
     def sqd(self,src,seq,t,b,c,rp,p,o,l):
@@ -1675,11 +1693,11 @@ class node_info:
     def age_data(self):
         "increment age and delete old band"
         self.lock.acquire()
-        for i in self.rembcast.keys():
-            self.rembcast[i] -= 1
-            if self.rembcast[i] < 0:
-                print "age out remote bcast adr",i
-                del(self.rembcast[i])
+##        for i in self.rembcast.keys():
+##            self.rembcast[i] -= 1
+##            if self.rembcast[i] < 0:
+##                print "age out remote bcast adr",i
+##                del(self.rembcast[i])
         for i in self.nodinfo.values():
             i.age += 1
 ##            if debug: print "ageing nodinfo",i.fnod,i.nod,i.bnd,i.age
@@ -1772,18 +1790,15 @@ class node_info:
 
 class netsync:
     "network database synchronization"
-    #global port_base
 
-    #port = port_base                                       # xx
     netmask = '255.255.255.0'
 
     rem_adr  = ""                                           # remote bc address
     
-    #authkey = md5.new("")
     authkey = hashlib.md5()
     pkts_rcvd,fills,badauth_rcvd,send_errs = 0,0,0,0
     hostname = socket.gethostname()
-    my_addr = socket.gethostbyname(hostname)        # fails on some systems
+    my_addr = socket.gethostbyname(hostname)                # fails on some systems
     if my_addr[:3] == '10.':
         bc_addr = '10.255.255.255'
         netmask = '255.0.0.0'
@@ -1827,10 +1842,10 @@ class netsync:
             addrlst = []
             if addr == 'bcast':
                 addrlst.append(self.bc_addr)
-                addrlst.append(self.rem_adr)
-                for a in node_info.rembcast.keys():
-                    if debug: print "adding dyn remaddr",a
-                    addrlst.append(a)
+##                addrlst.append(self.rem_adr)
+##                for a in node_info.rembcast.keys():
+##                    if debug: print "adding dyn remaddr",a
+##                    addrlst.append(a)
             else: addrlst.append(addr)
             for a in addrlst:
                 if a == "": continue
@@ -1928,7 +1943,7 @@ class netsync:
                         sms.prmsg("msg not recognized %s"%addr)
 
     def start(self):
-        "launch all threads"
+        "launch all net threads"
 ##        global node
         print "This host:", self.hostname, "IP:",self.my_addr, "Mask:",self.bc_addr
 ##        if (self.hostname > "") & (node == 's'):
@@ -2087,32 +2102,88 @@ def testcmd(name, rex, value):
         kbuf = ""
     return value
 
+
+# new sqlite globals database fdlog.sq3 replacing globals file
+#
+class GlobalDb:
+    def __init__(self):
+        self.dbPath = globf[0:-4] + '.sq3'
+        print "Using global database",self.dbPath
+       
+        self.sqdb = sqlite3.connect(self.dbPath)  # connect to the database
+        self.sqdb.row_factory = sqlite3.Row       # row factory
+        self.curs = self.sqdb.cursor()            # make a database connection cursor
+        sql = "create table if not exists global(nam text,val text,primary key(nam))"
+        self.curs.execute(sql)
+        self.sqdb.commit()
+        self.cache = {}                           # use a cache to reduce db i/o
+    def get(self,name,default):
+        if name in self.cache:
+            #print "reading from globCache",name
+            return self.cache[name]
+        sql = "select * from global where nam == ?"
+        results = self.curs.execute(sql,(name,))
+        value = default
+        for result in results:
+            value = result['val']
+            #print "reading from globDb", name, value
+            self.cache[name] = value
+        return value
+    def put(self,name,value):
+        now = self.get(name,'zzzzz')
+        #print now,str(value),now==str(value)
+        if str(value) == now: return              # skip write if same
+        sql = "replace into global (nam,val) values (?,?)"
+        self.curs.execute(sql,(name,value))
+        self.sqdb.commit()
+        #print "writing to globDb", name, value
+        self.cache[name] = str(value)
+
+
+
 def loadglob():
     "load persistent local config to global vars from file"
-    global node,operator,logger,power,tdwin,debug,authk
-    try:
-        fd = file(globf,"r")
-        line = fd.readline()
-        fd.close()
-        d1,node,operator,logger,power,auth,tdwin,debug,d2 = string.split(line,'|')
-        debug = int(debug)
-        tdwin = int(tdwin)
-        authk = auth
-        print "Loaded persistent configuration data file: %s"%globf
-        print "  Node ID: %s\n  Operator: %s\n  Logger: %s\n  Power: %s"%\
-          (node,operator,logger,power)
-    except:
-        print "Persistent configuration data file not found, using default values"
-        authk = "tst"
+    global globDb,node,operator,logger,power,tdwin,debug,authk
+    globDb = GlobalDb()
+    node = globDb.get('node','')
+    operator = globDb.get('operator','')
+    logger = globDb.get('logger','')
+    power = globDb.get('power','100')
+    authk = globDb.get('authk','tst')
+    tdwin = int(globDb.get('tdwin',10))
+    debug = int(globDb.get('debug',0))
+    
+##    try:
+##        fd = file(globf,"r")
+##        line = fd.readline()
+##        fd.close()
+##        d1,node,operator,logger,power,auth,tdwin,debug,d2 = string.split(line,'|')
+##        debug = int(debug)
+##        tdwin = int(tdwin)
+##        authk = auth
+##        print "Loaded persistent configuration data file: %s"%globf
+##        print "  Node ID: %s\n  Operator: %s\n  Logger: %s\n  Power: %s"%\
+##          (node,operator,logger,power)
+##    except:
+##        print "Persistent configuration data file not found, using default values"
+##        authk = "tst"
 
     if debug: print "  debug:",debug
     
 def saveglob():
     "save persistent local config global vars to file"
-    fd = file(globf,"w")
-    fd.write("|%s|%s|%s|%s|%s|%s|%s|"%(node,operator,logger,power,\
-                                       authk,tdwin,debug))
-    fd.close()
+    globDb.put('node',node)
+    globDb.put('operator',operator)
+    globDb.put('logger',logger)
+    globDb.put('power',power)
+    globDb.put('authk',authk)
+    globDb.put('tdwin',tdwin)
+    globDb.put('debug',debug)
+
+##    fd = file(globf,"w")
+##    fd.write("|%s|%s|%s|%s|%s|%s|%s|"%(node,operator,logger,power,\
+##                                       authk,tdwin,debug))
+##    fd.close()
 
 
 # contest log section
@@ -2281,7 +2352,7 @@ def contestlog(pr):
         print "    %3s Five Alternate power QSOs completed (%s/5) (list below)"%(natural_bp,natural_q)
 
     w1aw_msg_bp = 0
-    if w1aw_msg != "":
+    if len(w1aw_msg) > 30: # ignore short file place holder
         w1aw_msg_bp = 100
         tot_bonus += w1aw_msg_bp
         print "    %3s W1AW FD Message Received (copy below)"%(w1aw_msg_bp)
@@ -2689,7 +2760,7 @@ class newparticipantdialog:
         s = newparticipantdialog()
         s.t = Toplevel(root)
         s.t.transient(root)
-        s.t.title('FDLOG Add New Participant')
+        s.t.title('FDLog Add New Participant')
         f1 = Frame(s.t)
         f1.grid(row=0,column=0)
         Label(f1,text='Initials',font=fdbfont).grid(row=0,column=0,sticky=W)
@@ -2728,7 +2799,7 @@ def renew_title():
     mob = sob/60
     h = mob/60
     m = mob%60
-    root.title('FDLOG %s %s %s (Node: %s Time on Band: %d:%02d) %s:%s UTC %s/%s'%\
+    root.title('FDLog %s %s %s (Node: %s Time on Band: %d:%02d) %s:%s UTC %s/%s'%\
        (call,clas,sec,node,h,m,t[-6:-4],t[-4:-2],t[2:4],t[4:6]))
     net.bcast_now()   # this is periodic bcast...
 
@@ -2790,7 +2861,7 @@ def viewprep(ttl=''):
     "view preparation core code"
     w = Toplevel(root)
 ##    w.transient(root)
-    w.title("FDLOG - %s"%ttl)
+    w.title("FDLog - %s"%ttl)
     t = Text(w,takefocus=0,height=20,width=85,font=fdfont,\
              wrap=NONE,setgrid=1)
     s = Scrollbar(w,command=t.yview)
@@ -3141,12 +3212,12 @@ helpmenu.add_command(label="Time Conversion Chart",\
 ##helpmenu.add_command(label="NTS Manual (pdf)",\
 ##                     command=lambda:os.startfile('pscm.pdf'))
 
-helpmenu.add_command(label="FDLOG Release Log",\
+helpmenu.add_command(label="FDLog Release Log",\
                      command=lambda:viewtextv(release_log,"Release Log"))
-helpmenu.add_command(label="FDLOG Set Commands",command=gd.sethelp)
-helpmenu.add_command(label="FDLOG Manual",\
+helpmenu.add_command(label="FDLog Set Commands",command=gd.sethelp)
+helpmenu.add_command(label="FDLog Manual",\
                      command=lambda:viewtextf('fdlogman.txt',"Manual"))
-helpmenu.add_command(label="About FDLOG",\
+helpmenu.add_command(label="About FDLog",\
                      command=lambda:viewtextv(about,"About"))
 
 f1 = Frame(root,bd=1)                           # band buttons
@@ -3317,14 +3388,14 @@ qdb.loadfile()                  # read log file
 print
 if node == gd.getv('tmast'):
     print "This Node is the TIME MASTER!!"
-    print "THIS COMPUTER'S CLOCK BETTER BE RIGHT"
+    print "THIS COMPUTER'S CLOCK BETTER BE RIGHT (preferrably GPS locked)"
     print "User should Insure that system time is within 1 second of the"
     print "  correct time and that the CORRECT TIMEZONE is selected (in the OS)"
     print
 else:
     print "User should Insure that System Time is within a few seconds of the"
     print "  correct time and that the CORRECT TIMEZONE is selected (in the OS)"
-print "To change system time, stop FDLOG, change the time or zone, then restart"
+print "To change system time, stop FDLog, change the time or zone, then restart"
 print
              
 net.start()                     # start threads
@@ -3376,7 +3447,7 @@ def proc_key(ch):
         if re.match(r'[.]h$',kbuf):      # help request
             
             m = """
-    .band 160/80/40/20/15/10/6/2/220/440/1200/sat c/d/p
+    .band 160/80/40/20/15/10/6/2/220/440/900/1200/sat c/d/p
     .off               change band to off
     .pow <dddn>        power level in integer watts (suffix n for natural)
 
@@ -3390,7 +3461,7 @@ def proc_key(ch):
     .remip <n.n.n.n>   remote ip to join to (incomplete)
     
     .delete <node> <seq_num> <reason>    delete log entry
-    .edit <call>       edit (in work)
+    .edit <call>       edit Q
             """
 
             viewtextv(m,'Command Help')
@@ -3847,6 +3918,7 @@ saveglob()
 print "Bye"
 time.sleep(0.2)
 
+
 # Suggestions
 
 # FD 2005 pre-meeting
@@ -3861,10 +3933,11 @@ time.sleep(0.2)
 #
 # question - where are operator/station scores? make easier to see??
 #
-# feature request - vhf contest version (Kit), or general contests (Frank)
-#   have a .set contest variable
+# feature request - vhf contest version (Kit) DONE,
+#   or general contests (Frank)
+#   have a .set contest variable DONE
 #
-# feature request - editing previous input functionality *****
+# feature request - editing previous input functionality ***** DONE
 #
 # feature request - editing current input (out of order input)
 #   cursor keys left, right, char->insert, delete
